@@ -5,17 +5,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Habit {
-  id            String          @id @default(cuid())
-  title         String
-  date          DateTime
-  dayHabits     DayHabit[]
-  weekDays HabitWeekDays[]
+  id         String          @id @default(cuid())
+  title      String
+  date DateTime
+  dayHabits  DayHabit[]
+  weekDays   HabitWeekDays[]
 
   @@map("habits")
 }
@@ -30,8 +34,8 @@ model Day {
 }
 
 model HabitWeekDays {
-  id       String @id @default(cuid())
-  habit    Habit  @relation(fields: [habit_id], references: [id])
+  id    String @id @default(cuid())
+  habit Habit  @relation(fields: [habit_id], references: [id])
 
   habit_id String
   week_day Int
