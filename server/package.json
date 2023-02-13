@@ -7,20 +7,24 @@
     "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Joyce Fatima",
   "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^8.2.0",
-    "@prisma/client": "^4.9.0",
+    "@prisma/client": "^4.8.1",
+    "dayjs": "^1.11.7",
     "fastify": "^4.11.0",
-    "tsx": "^3.12.2",
-    "typescript": "^4.9.4"
+    "web-push": "^3.5.0",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^9.3.0",
-    "prisma-erd-generator": "^1.2.5"
+    "@types/web-push": "^3.3.2",
+    "prisma-erd-generator": "^1.2.5",
+    "tsx": "^3.12.2",
+    "typescript": "^4.9.4"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts"
   }
 }

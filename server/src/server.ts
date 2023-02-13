@@ -1,29 +1,17 @@
-import Fastify from 'fastify'
-import { PrismaClient } from '@prisma/client'
-import cors from '@fastify/cors'
+import fastify from 'fastify';
+import cors from '@fastify/cors';
+import { appRoutes } from './routes';
+import { notificationsRoutes } from './notifications-routes';
 
-
-const app = Fastify()
-const prisma = new PrismaClient()
+const app = fastify();
 
 app.register(cors)
+app.register(appRoutes)
+app.register(notificationsRoutes)
 
-
-    app.get('/hello', () => {
-        const habits = prisma.habit.findMany({
-            where: {
-                title: {
-                    startsWith: 'Exercitar'
-                }
-            }
-            
-        })
-        
-        return habits
-    })
-
-    app.listen({
-        port: 5113
-    }).then( () => {
-        console.log('HTTP Server Running')
-    }) 
+app.listen({
+  port: 3333,
+  host: '0.0.0.0'
+}).then(() => {
+  console.log('HTTP Server running!')
+})

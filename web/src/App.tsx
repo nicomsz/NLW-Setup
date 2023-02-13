@@ -1,22 +1,41 @@
-import { useState } from 'react'
-import Habit from './components/habit'
-import './styles/global.css'
+import "./lib/dayjs";
+import "./styles/global.css";
+
+import { Header } from './components/Header';
+import { SummaryTable } from './components/SummaryTable';
+import { api } from './lib/axios';
 
 
+navigator.serviceWorker.register('service-worker.js')
+  .then(async serviceWorker => {
+    let subscription = await serviceWorker.pushManager.getSubscription()
 
-function App() {
-  
-
-  return (
-    <div >
-      <Habit completed={3} />
-      <Habit completed={3} />
-      <Habit completed={3} />
-      <Habit completed={3} />
-      <Habit completed={3} />
+    if(!subscription) {
+      const publicKeyResponse = await api.get('/push/public_key')
       
-    </div>
-  )
-}
+      subscription = await serviceWorker.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: publicKeyResponse.data.publicKey
+      })
+    }
 
-export default App
+
+    await api.post('/push/register', {
+      subscription,
+    })
+
+    await api.post('/push/send', {
+      subscription,
+    })
+  })
+
+export function App() {
+  return (
+    <div className="w-screen h-screen flex justify-center items-center">
+      <div className="w-full max-w-5xl px-6 flex flex-col gap-16">
+        <Header />
+        <SummaryTable />
+      </div>
+    </div>
+  );
+}
